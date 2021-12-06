@@ -1,0 +1,12 @@
+Dim colstr As String
+Dim modn As Integer
+
+Do
+	num = num -1
+	modn = num Mod 26
+
+	colstr = chr(65+modn) & colstr
+	num = CInt(Math.Truncate(num/26))
+	Loop While num > 0
+	
+col=colstr
