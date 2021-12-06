@@ -1,0 +1,34 @@
+	Dim App_excel As Application
+    Dim Wb_inputWb As Microsoft.Office.Interop.Excel.Workbook
+    
+    '----------------------------------------------------------------------------------
+	Dim Arr_links As Array
+	Dim Str_temp As String
+
+    '----------------------------------------------------------------------------------
+
+    App_excel = New Application
+    App_excel.Visible = True
+    App_excel.ScreenUpdating = True
+    Wb_inputWb = App_excel.Workbooks.Open(in_Str_wbPath, [ReadOnly]:=False, UpdateLinks:=False)
+
+    '----------------------------------------------------------------------------------
+    'Body
+	With CType(Wb_inputWb.Sheets("sheet1"), Worksheet)
+    
+    Dim lngB As Long
+    
+    lngB = CType(.Range("B1"), Range).End(XlDirection.xlDown).Row
+   
+    out_Int_IK_Row = CInt(lngB)
+	
+    End With
+    '----------------------------------------------------------------------------------
+endSeq:
+    App_excel.DisplayAlerts = True
+    Wb_inputWb.Close()
+    App_excel.Quit()
+    App_excel.ScreenUpdating = True
+	
+	
+System.Threading.Thread.Sleep(2000)	'2초 딜레이
