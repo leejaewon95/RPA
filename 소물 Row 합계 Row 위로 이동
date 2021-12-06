@@ -1,0 +1,65 @@
+	Dim App_excel As Application
+    Dim Wb_inputWb As Microsoft.Office.Interop.Excel.Workbook
+    
+    '----------------------------------------------------------------------------------
+	Dim Arr_links As Array
+	Dim Str_temp As String
+
+    '----------------------------------------------------------------------------------
+
+    App_excel = New Application
+    App_excel.Visible = True
+    App_excel.ScreenUpdating = True
+    Wb_inputWb = App_excel.Workbooks.Open(in_Str_wbPath, [ReadOnly]:=False, UpdateLinks:=False)
+
+    '----------------------------------------------------------------------------------
+    'Body	
+	With CType(Wb_inputWb.Sheets("차종별 생산실적2"), Worksheet)
+	
+	Dim LngR As Long
+    Dim i As Long
+    
+     LngR = CType(.Range("A999"), Range).End(XlDirection.xlUp).Row
+	
+    
+    For i = 3 To LngR
+        
+		If CType(.Range("A" & i), Range).Value.Equals(CStr("_소물")) Or CType(.Range("A" & i), Range).Value.Equals(CStr("소물")) Then
+		 
+           CType(.Range("A" & i), Range).EntireRow.Copy
+           
+        End If
+           
+        If CType(.Range("A" & i), Range).Value.Equals(CStr("합계")) Then
+        
+            CType(.Range("A" & i), Range).EntireRow.Insert
+            
+            Exit For
+        
+        End If
+    
+    Next
+    
+     For i = 3 To LngR
+            
+        If CType(.Range("A" & i), Range).Value.Equals(CStr("_소물")) Or CType(.Range("A" & i), Range).Value.Equals(CStr("소물")) Then
+        
+            CType(.Range("A" & i), Range).EntireRow.Delete
+            
+            Exit For
+        
+        End If
+     
+     Next   
+
+    End With
+    '----------------------------------------------------------------------------------
+endSeq:
+    App_excel.DisplayAlerts = True
+    Wb_inputWb.Save()
+    Wb_inputWb.Close()
+    App_excel.Quit()
+    App_excel.ScreenUpdating = True
+	
+	
+System.Threading.Thread.Sleep(2000)	'2초 딜레이
